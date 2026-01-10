@@ -31,7 +31,7 @@
 
 ## 🔗 배포 링크
 
-👉 [마인드 버디 바로가기](https://mind-buddy.pages.dev) *(배포 후 업데이트)*
+👉 **[마인드 버디 바로가기](https://mind-buddy.pages.dev)**
 
 ## 🛠 기술 스택
 
