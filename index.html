@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>마인드 버디</title>
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2100659186702761"
-     crossorigin="anonymous"></script>
     <!-- 폰트 로드: Jua(타이틀용), Gowun Dodum(본문용) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -189,7 +186,7 @@
         .quick-btn:hover { background: white; transform: translateY(-2px); }
         .quick-btn .icon { font-size: 1.5rem; }
 
-        /* --- Daily Quote (New) --- */
+        /* --- Daily Quote --- */
         .daily-quote-card {
             background: linear-gradient(135deg, #fffaf6, #fff);
             border: 1px dashed var(--primary);
@@ -318,7 +315,6 @@
             background: white;
             border: 2px solid #fff;
             border-radius: 24px;
-            font-size: 2.8rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -326,7 +322,16 @@
             flex-shrink: 0;
             position: relative;
             z-index: 2;
+            overflow: hidden;
         }
+        /* New class for image emojis */
+        .emoji-img {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            display: block;
+        }
+        
         .bubble {
             background: white;
             border: none;
@@ -410,7 +415,15 @@
         }
         .col-item.unlocked { background: white; box-shadow: var(--shadow2); }
         .col-item.locked { opacity: 0.5; filter: grayscale(1); }
-        .col-emoji { font-size: 1.8rem; margin-bottom: 4px; }
+        .col-emoji { 
+            width: 50%;
+            height: 50%;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .col-emoji img { width: 100%; height: 100%; object-fit: contain; }
         .col-name { font-size: 0.75rem; color: var(--muted); }
 
         /* --- Records Tab --- */
@@ -801,7 +814,6 @@
     <div class="modal-box" style="background: #fffaf0;">
         <div class="modal-header" style="justify-content: center;">
             <h3>📩 도착한 쪽지</h3>
-            <!-- X button removed here -->
         </div>
         <div class="quote-modal-content">
             <div style="font-size:2rem; margin-bottom:15px;">🌿</div>
@@ -850,20 +862,23 @@
 </div>
 
 <script>
+// Helper function to create image tag for emoji
+const tw = (code) => `<img src="https://cdnjs.cloudflare.com/ajax/libs/twemoji/14.0.2/svg/${code}.svg" class="emoji-img">`;
+
 /**
- * DATA: Animals (Updated with Personality Desc & Actions)
+ * DATA: Animals (Updated with Twemoji Images)
  */
 const ANIMALS = [
-    {id:'bunny', emoji:'🐰', name:'보들이', pers:'다정하고 따뜻함', desc:'부드럽게 위로해주는 토끼', actions:{ happy:["귀를 쫑긋 세우고 방긋 웃어요."], sad:["조용히 옆에 앉아 손수건을 내밀어요."], angry:["한 발 물러서서 숨 고르자고 눈빛으로 말해요."], anxious:["손바닥을 펴 보이며 ‘천천히’ 제스처를 해요."] }},
-    {id:'bear', emoji:'🐻', name:'포근이', pers:'듬직하고 편안함', desc:'담담하게 공감하는 곰', actions:{ tired:["따뜻한 담요를 툭 덮어줘요."], sad:["등을 토닥… 토닥… 해줘요."], anxious:["큰 숨 한 번 같이 쉬자고 고개를 끄덕여요."] }},
-    {id:'cat', emoji:'🐱', name:'솜솜이', pers:'도도하지만 츤데레', desc:'돌려서 위로하는 고양이', actions:{ sad:["‘별거 아니야’ 하면서도 옆을 지켜줘요."], angry:["턱을 들고 ‘그건 좀 아니지’라고 말해줘요."], happy:["꼬리를 살랑 흔들고는 모른 척 해요."] }},
-    {id:'dog', emoji:'🐶', name:'뭉치', pers:'에너지 넘침', desc:'신나게 응원하는 강아지', actions:{ happy:["빙글빙글 돌면서 박수 치는 중이에요."], anxious:["앞발로 톡톡 ‘나 여기!’ 하고 알려줘요."], tired:["잠깐 산책 대신 누워 쉬자고 눈을 반짝여요."] }},
-    {id:'fox', emoji:'🦊', name:'달콩이', pers:'영리하고 장난기', desc:'유머로 풀어주는 여우', actions:{ angry:["장난스런 눈으로 ‘그럼 우리 플랜B!’를 꺼내요."], sad:["살짝 농담을 섞어 숨통을 틔워줘요."], anxious:["‘불안’에게 별명을 붙여보자고 제안해요."] }},
-    {id:'panda', emoji:'🐼', name:'몽글이', pers:'느긋하고 철학적', desc:'조용히 공감하는 판다', actions:{ calm:["느린 호흡으로 같이 멍때려요."], sad:["‘오늘은 오늘이구나’ 하고 차분히 곁에 있어요."], anxious:["지금-여기만 보자고 손짓해요."] }},
-    {id:'koala', emoji:'🐨', name:'졸졸이', pers:'졸리고 나른함', desc:'함께 쉬자는 코알라', actions:{ tired:["하품하며 ‘우리 5분만 쉬자…’ 해요."], anxious:["‘급하지 않아’ 하고 느리게 끄덕여요."] }},
-    {id:'seal', emoji:'🦭', name:'말랑이', pers:'순하고 공감력', desc:'깊이 공감하는 물개', actions:{ sad:["눈을 동그랗게 뜨고 ‘많이 힘들었겠다’ 해요."], anxious:["두 손을 모아 ‘괜찮아’ 하는 표정이에요."] }},
-    {id:'penguin', emoji:'🐧', name:'뒤뚱이', pers:'엉뚱하고 유쾌', desc:'웃음 주는 펭귄', actions:{ happy:["뒤뚱뒤뚱 춤을 춰요."], sad:["엉뚱한 포즈로 웃음을 살짝 꺼내줘요."] }},
-    {id:'hedgehog', emoji:'🦔', name:'뾰롱이', pers:'까칠하지만 속정', desc:'직설적 위로의 고슴도치', actions:{ angry:["‘그건 선 넘었지’ 하고 딱 잘라 말해줘요."], anxious:["‘지금 할 수 있는 것만 하자’고 단호해요."] }}
+    {id:'bunny', emoji:tw('1f430'), name:'보들이', pers:'다정하고 따뜻함', desc:'부드럽게 위로해주는 토끼', actions:{ happy:["귀를 쫑긋 세우고 방긋 웃어요."], sad:["조용히 옆에 앉아 손수건을 내밀어요."], angry:["한 발 물러서서 숨 고르자고 눈빛으로 말해요."], anxious:["손바닥을 펴 보이며 ‘천천히’ 제스처를 해요."] }},
+    {id:'bear', emoji:tw('1f43b'), name:'포근이', pers:'듬직하고 편안함', desc:'담담하게 공감하는 곰', actions:{ tired:["따뜻한 담요를 툭 덮어줘요."], sad:["등을 토닥… 토닥… 해줘요."], anxious:["큰 숨 한 번 같이 쉬자고 고개를 끄덕여요."] }},
+    {id:'cat', emoji:tw('1f431'), name:'솜솜이', pers:'도도하지만 츤데레', desc:'돌려서 위로하는 고양이', actions:{ sad:["‘별거 아니야’ 하면서도 옆을 지켜줘요."], angry:["턱을 들고 ‘그건 좀 아니지’라고 말해줘요."], happy:["꼬리를 살랑 흔들고는 모른 척 해요."] }},
+    {id:'dog', emoji:tw('1f436'), name:'뭉치', pers:'에너지 넘침', desc:'신나게 응원하는 강아지', actions:{ happy:["빙글빙글 돌면서 박수 치는 중이에요."], anxious:["앞발로 톡톡 ‘나 여기!’ 하고 알려줘요."], tired:["잠깐 산책 대신 누워 쉬자고 눈을 반짝여요."] }},
+    {id:'fox', emoji:tw('1f98a'), name:'달콩이', pers:'영리하고 장난기', desc:'유머로 풀어주는 여우', actions:{ angry:["장난스런 눈으로 ‘그럼 우리 플랜B!’를 꺼내요."], sad:["살짝 농담을 섞어 숨통을 틔워줘요."], anxious:["‘불안’에게 별명을 붙여보자고 제안해요."] }},
+    {id:'panda', emoji:tw('1f43c'), name:'몽글이', pers:'느긋하고 철학적', desc:'조용히 공감하는 판다', actions:{ calm:["느린 호흡으로 같이 멍때려요."], sad:["‘오늘은 오늘이구나’ 하고 차분히 곁에 있어요."], anxious:["지금-여기만 보자고 손짓해요."] }},
+    {id:'koala', emoji:tw('1f428'), name:'졸졸이', pers:'졸리고 나른함', desc:'함께 쉬자는 코알라', actions:{ tired:["하품하며 ‘우리 5분만 쉬자…’ 해요."], anxious:["‘급하지 않아’ 하고 느리게 끄덕여요."] }},
+    {id:'seal', emoji:tw('1f9ad'), name:'말랑이', pers:'순하고 공감력', desc:'깊이 공감하는 물개', actions:{ sad:["눈을 동그랗게 뜨고 ‘많이 힘들었겠다’ 해요."], anxious:["두 손을 모아 ‘괜찮아’ 하는 표정이에요."] }},
+    {id:'penguin', emoji:tw('1f427'), name:'뒤뚱이', pers:'엉뚱하고 유쾌', desc:'웃음 주는 펭귄', actions:{ happy:["뒤뚱뒤뚱 춤을 춰요."], sad:["엉뚱한 포즈로 웃음을 살짝 꺼내줘요."] }},
+    {id:'hedgehog', emoji:tw('1f994'), name:'뾰롱이', pers:'까칠하지만 속정', desc:'직설적 위로의 고슴도치', actions:{ angry:["‘그건 선 넘었지’ 하고 딱 잘라 말해줘요."], anxious:["‘지금 할 수 있는 것만 하자’고 단호해요."] }}
 ];
 
 // Rich Messages Data (From mind-buddy-merged)
@@ -1078,7 +1093,8 @@ function pickEmotion(emotion, isRetry = false) {
     void bubble.offsetWidth;
     bubble.classList.add('pop-anim');
 
-    document.getElementById('resAnimal').textContent = animal.emoji;
+    // Use innerHTML because emoji is now an IMG tag string
+    document.getElementById('resAnimal').innerHTML = animal.emoji;
     document.getElementById('resName').textContent = animal.name;
     // Tone Display Logic
     const toneName = {sweet:'다정', normal:'담백', humor:'유쾌'}[userTone];
@@ -1162,7 +1178,7 @@ function updateHistory() {
                 <div style="font-size:0.75rem; color:var(--muted);">${r.date} ${r.time}</div>
                 <div style="font-size:0.85rem; color:var(--ink);">${r.msg}</div>
             </div>
-            <div style="font-size:1.2rem;">${r.animal.emoji}</div>
+            <div style="font-size:1.2rem; display: flex; align-items: center;">${r.animal.emoji}</div>
         </li>
     `).join('');
 }
@@ -1215,10 +1231,10 @@ function showAnimalDetail(id) {
     const d = col[id];
     const html = `
         <div class="modal-header">
-            <h3>${a.emoji} ${a.name}</h3>
+            <h3>${a.name}</h3>
             <button class="close-icon" onclick="closeModal('animalModal')">✕</button>
         </div>
-        <div style="font-size:4rem; margin:10px 0;">${a.emoji}</div>
+        <div style="width: 100px; height: 100px; margin: 10px auto;">${a.emoji}</div>
         <p style="font-weight:bold; color:var(--ink); font-size:1.1rem;">${a.pers}</p>
         <p style="font-size:0.9rem; color:var(--muted); margin: 5px 0 20px;">"${a.desc}"</p>
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
@@ -1335,7 +1351,7 @@ function resetBubbles() {
     for(let i=0; i<25; i++) {
         const b = document.createElement('div');
         b.className = 'pop-btn';
-        b.innerHTML = '<span class="pop-burst">💥</span>';
+        b.innerHTML = ''; // Removed burst emoji
         b.onclick = function() {
             if(this.classList.contains('popped')) return;
             this.classList.add('popped', 'popping');
@@ -1360,7 +1376,7 @@ function setupPetGame(container) {
         <div style="text-align:center; padding:20px 0; position:relative;">
             <div style="position:relative; display:inline-block;">
                 <div id="petBubble" class="pet-bubble" style="opacity:0;">❓</div>
-                <div style="font-size:5rem; cursor:pointer; transition:0.1s;" id="petTarget">${pet.emoji}</div>
+                <div style="width:120px; height:120px; margin:0 auto; cursor:pointer; transition:0.1s;" id="petTarget">${pet.emoji}</div>
             </div>
             <div id="heartContainer" style="height:30px;"></div>
             <p id="petMsg" style="color:var(--muted); margin-top:10px;">친구를 쓰다듬어 주세요</p>
@@ -1416,7 +1432,7 @@ function setupIceGame(container) {
         playSound('ice', hits);
         
         if(settings.vibe && navigator.vibrate) navigator.vibrate(20);
-        createFloatEmoji(hits % 2 === 0 ? "💥" : "❄️");
+        // Removed createFloatEmoji
         
         block.style.transform = `rotate(${Math.random()*10-5}deg) scale(0.95)`;
         setTimeout(()=> block.style.transform = 'scale(1)', 50);
@@ -1424,7 +1440,7 @@ function setupIceGame(container) {
         document.getElementById('iceBar').style.width = `${(hits/hp)*100}%`;
         
         if (hits >= hp) {
-             block.textContent = "🧊💔";
+             block.textContent = "💦";
              document.getElementById('iceMsg').textContent = "시원하게 깨졌어요!";
              setTimeout(() => {
                  container.innerHTML = `
