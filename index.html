@@ -962,16 +962,15 @@
         .pet-bubble {
             position: absolute;
             top: 0;
-            right: 0;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
             background: white;
             border: 1px solid #fff;
             border-radius: 14px;
-            border-bottom-left-radius: 2px;
             padding: 8px 12px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
             font-size: 1.5rem;
             opacity: 0;
-            transform: scale(0.8);
             transition: all 0.4s;
             z-index: 10;
             pointer-events: none;
@@ -979,7 +978,7 @@
 
         .pet-bubble.show {
             opacity: 1;
-            transform: scale(1) translateY(-15px) translateX(15px);
+            transform: translateX(-50%) scale(1) translateY(-15px);
         }
 
         /* Updated Floating Emoji Size */
