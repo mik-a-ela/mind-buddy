@@ -1102,7 +1102,7 @@
         <div id="dailyQuoteArea" class="daily-quote-card" onclick="openDailyQuote()">
             <div class="daily-icon">📩</div>
             <div class="daily-title">오늘 나에게 온 쪽지</div>
-            <div class="daily-desc">하루에 한 번만 열 수 있어요</div>
+            <div class="daily-desc">당신을 위한 단 한 마디</div>
         </div>
 
         <!-- Tab 1: Emotion & Chat -->
@@ -2096,6 +2096,24 @@
             if (infiniteRefillMode) {
                 btn.style.background = 'var(--primary)';
                 btn.style.color = 'white';
+
+                // 안 터진 버블이 4개 이하면 5개까지 복원
+                const unpoppedBubbles = document.querySelectorAll('.pop-btn:not(.popped)');
+                const poppedBubbles = document.querySelectorAll('.pop-btn.popped');
+
+                if (unpoppedBubbles.length <= 4 && poppedBubbles.length > 0) {
+                    const needToRestore = 5 - unpoppedBubbles.length;
+                    const poppedArray = Array.from(poppedBubbles);
+                    // 랜덤하게 섞기
+                    for (let i = poppedArray.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [poppedArray[i], poppedArray[j]] = [poppedArray[j], poppedArray[i]];
+                    }
+                    // 필요한 만큼 복원
+                    for (let i = 0; i < Math.min(needToRestore, poppedArray.length); i++) {
+                        poppedArray[i].classList.remove('popped', 'popping');
+                    }
+                }
             } else {
                 btn.style.background = 'white';
                 btn.style.color = 'var(--ink)';
