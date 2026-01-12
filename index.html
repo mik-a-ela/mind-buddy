@@ -4,11 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>마인드 버디</title>
+    <!-- [수정] 타이틀과 메타 태그를 따뜻한 감성 톤으로 변경 -->
+    <title>마인드 버디 - 오늘 마음을 쉬어가는 곳</title>
+
+    <meta name="description"
+        content="마인드 버디는 이모지로 오늘의 기분을 고르면, 동물 친구가 말풍선으로 다정한 한마디를 건네는 작은 마음 쉼터예요. 호흡·그라운딩·미니 게임으로 잠깐 숨을 돌려요.">
+    <meta property="og:title" content="마인드 버디 - 오늘 마음을 쉬어가는 곳">
+    <meta property="og:description" content="이모지로 기분을 고르면 동물 친구가 다정한 한마디를 건네요. 호흡·그라운딩·미니 게임으로 잠깐 쉬어가요.">
+    <meta property="og:type" content="website">
+
     <!-- 폰트 로드: Jua(타이틀용), Gowun Dodum(본문용) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&family=Jua&display=swap" rel="stylesheet">
+
+    <!-- [중요] 애드센스 코드 (정상 적용됨) -->
+
+    <!-- [중요] 애드센스 코드 (정상 적용됨) -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2100659186702761"
         crossorigin="anonymous"></script>
 
@@ -201,6 +213,93 @@
             display: flex;
             align-items: center;
             gap: 8px;
+        }
+
+        /* --- SEO Intro Styles --- */
+        .seo-intro {
+            margin-top: 20px;
+        }
+
+        .seo-intro .intro-card {
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid var(--stroke);
+            border-radius: var(--radius);
+            padding: 18px 18px 16px;
+            box-shadow: var(--shadow2);
+        }
+
+        .intro-title {
+            margin: 0 0 10px 0;
+            font-size: 1.05rem;
+            color: var(--ink);
+        }
+
+        .intro-hero {
+            margin: 0 0 14px 0;
+            color: var(--muted);
+            line-height: 1.65;
+            word-break: keep-all;
+        }
+
+        .intro-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        @media (max-width: 420px) {
+            .intro-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .intro-box {
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 18px;
+            padding: 12px;
+        }
+
+        .intro-box-title {
+            font-family: 'Jua', sans-serif;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: var(--ink);
+        }
+
+        .intro-list {
+            margin: 0;
+            padding-left: 18px;
+            color: var(--muted);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .intro-note {
+            margin: 10px 0 0 0;
+            font-size: 0.82rem;
+            color: var(--muted);
+            opacity: 0.9;
+        }
+
+        .intro-faq {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+            font-size: 0.86rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .faq-q {
+            color: var(--ink);
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .faq-a {
+            margin-top: 2px;
         }
 
         /* --- Quick Actions --- */
@@ -983,7 +1082,7 @@
                     <path d="M50 15 Q50 5 40 10 Q30 15 50 25" fill="#A8C8BA" stroke="#8caba1" stroke-width="1" />
                 </svg>
                 <h1>
-                    마인드 버디
+                    마인드 버디 <span style="font-size: 0.85em;">🌱🩷</span>
                     <span class="title-deco" style="top:-5px; right:-15px;">✨</span>
                     <span class="title-deco"
                         style="bottom:0px; left:-10px; animation-delay:1s; font-size:0.8rem;">☁️</span>
@@ -1053,14 +1152,60 @@
                     </div>
                 </div>
                 <div style="text-align:center; margin-top:20px;">
-                    <button class="btn" onclick="pickEmotion(lastEmotion, true)">🎲 다른 한마디 듣기</button>
+                    <button class="btn" onclick="pickEmotion(lastEmotion, { retry:true, keepAnimal:true })">🎲 다른 한마디
+                        듣기</button>
                 </div>
             </div>
 
-            <div id="welcomeArea" class="card"
-                style="margin-top:20px; text-align:center; color:var(--muted); background:rgba(255,255,255,0.4); border:none;">
-                <p style="font-size:0.9rem;">기분 이모지를 누르면<br>동물 친구가 찾아옵니다.</p>
-            </div>
+            <!-- [교체 추천] 웰컴 메시지 & 사이트 소개 (버튼 없이 바로 노출) -->
+            <section id="welcomeArea" class="seo-intro" aria-label="마인드 버디 서비스 소개">
+                <div class="intro-card">
+                    <h2 class="intro-title">🌱 마인드 버디는 어떤 곳인가요?</h2>
+
+                    <!-- 첫 화면에 보일 “짧은 소개” -->
+                    <p class="intro-hero">
+                        이모지로 기분을 고르면, 동물 친구가 말풍선으로 다정한 한마디를 건네요.<br>
+                        숨 고르기·그라운딩·미니 게임으로 잠깐 쉬어가요.
+                    </p>
+
+                    <!-- 길게 느껴지지 않게 “블록 분산” -->
+                    <div class="intro-grid">
+                        <div class="intro-box">
+                            <div class="intro-box-title">✨ 이렇게 사용해요</div>
+                            <ul class="intro-list">
+                                <li>기분 이모지 선택</li>
+                                <li>동물 친구의 한마디 받기</li>
+                                <li>루틴/게임으로 긴장 풀기</li>
+                            </ul>
+                        </div>
+
+                        <div class="intro-box">
+                            <div class="intro-box-title">🧸 들어있는 것들</div>
+                            <ul class="intro-list">
+                                <li>4-7-8 호흡, 30초 그라운딩</li>
+                                <li>버블랩 · 쓰담쓰담 · 얼음깨기</li>
+                                <li>도감/기록(이 기기에만 저장)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <p class="intro-note">
+                        마인드 버디는 전문 심리상담이나 치료를 대신하지 않아요. 위급한 상황이라면 도움처 안내를 확인해 주세요.
+                    </p>
+
+                    <!-- 콘텐츠 분량 보강용: “짧은 FAQ” (버튼 없이 그대로 노출) -->
+                    <div class="intro-faq">
+                        <div class="faq-q">Q. 내 기록은 어디에 저장되나요?</div>
+                        <div class="faq-a">A. 서버가 아니라 이 기기(LocalStorage)에만 저장돼요.</div>
+
+                        <div class="faq-q">Q. 오늘의 쪽지는 하루에 한 번만인가요?</div>
+                        <div class="faq-a">A. 하루에 하나가 정해지고, 그날은 다시 열어볼 수 있어요.</div>
+
+                        <div class="faq-q">Q. 너무 힘들 때는요?</div>
+                        <div class="faq-a">A. 설정 탭의 도움처 안내를 먼저 확인해 주세요.</div>
+                    </div>
+                </div>
+            </section>
         </div>
 
         <!-- Tab 2: Games -->
@@ -1318,6 +1463,159 @@
 
         const EMPATHY_EMOJIS = ["💕", "✨", "🍀", "🌈", "🧸", "🫧", "🌻", "🫶", "🌟", "💖", "🌸", "🦋", "🍃", "☁️", "🎈", "🎵", "🎶", "🕊️", "💎"];
 
+        /* =========================
+           NEW: 반복 방지 + 동물별 말투 레이어
+        ========================= */
+        let lastAnimalId = null;
+        // 최근에 쓴 메시지/인덱스 저장(세션용)
+        const recentBaseIdx = {};   // bucket -> [idx,...]
+        const recentFinalText = {}; // bucket -> [text,...]
+        const RECENT_LIMIT = 6;
+
+        function pick(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+
+        function maybe(arr, prob = 0.45) {
+            if (!arr || arr.length === 0) return "";
+            return Math.random() < prob ? pick(arr) : "";
+        }
+
+        function pushRecent(map, bucket, value) {
+            if (!map[bucket]) map[bucket] = [];
+            map[bucket].unshift(value);
+            if (map[bucket].length > RECENT_LIMIT) map[bucket].pop();
+        }
+
+        function hasRecent(map, bucket, value) {
+            return (map[bucket] || []).includes(value);
+        }
+
+        // 동물별 말투/버릇(너무 길게 안 늘리고 “체감 다양성”만 확 올리는 구성)
+        const VOICE = {
+            _default: {
+                sweet: {
+                    prefixes: ["(소곤소곤)", "여기 와요.", "잠깐 멈춰도 돼요."],
+                    suffixes: ["저는 사용자님 편이에요.", "천천히 가도 괜찮아요.", "오늘도 잘 버티고 있어요."],
+                    emoAdds: {
+                        sad: ["울어도 괜찮아요.", "마음이 아프면 쉬어도 돼요."],
+                        anxious: ["지금은 ‘안전’이 먼저예요.", "한 번에 한 가지면 돼요."],
+                        angry: ["그 마음, 이유가 있었겠죠.", "경계가 흔들린 거예요."],
+                        tired: ["오늘은 최소만 해도 충분해요."],
+                        happy: ["그 기분 오래가길 바라요."],
+                        calm: ["이 고요함, 너무 소중해요."],
+                        love: ["따뜻함이 느껴져요."],
+                        excited: ["두근거림을 즐겨봐요."]
+                    }
+                },
+                normal: {
+                    prefixes: ["좋아요.", "오케이.", "정리해볼게요."],
+                    suffixes: ["지금 할 수 있는 것부터요.", "한 단계만 가도 됩니다.", "속도보다 방향이에요."],
+                    emoAdds: {
+                        sad: ["감정은 자연스러워요."],
+                        anxious: ["호흡부터 정리해봐요."],
+                        angry: ["우선 머리부터 식혀요."],
+                        tired: ["회복이 먼저예요."],
+                        happy: ["이 흐름 유지해봐요."],
+                        calm: ["안정적인 상태예요."],
+                        love: ["좋은 에너지예요."],
+                        excited: ["추진력으로 바꿔봐요."]
+                    }
+                },
+                humor: {
+                    prefixes: ["(등장)", "잠깐만요~", "오호라~"],
+                    suffixes: ["오늘도 살아남기 성공!", "과속은 금지예요 ㅋㅋ", "마음에 안전벨트 착용!"],
+                    emoAdds: {
+                        sad: ["‘천천히 쿠폰’ 쓰는 날이네요."],
+                        anxious: ["걱정이 너무 설치네요. 자리 좀 비켜!"],
+                        angry: ["스팀 뿜뿜 경보!"],
+                        tired: ["배터리 교체 필요…"],
+                        happy: ["행복 바이러스 퍼지는 중!"],
+                        calm: ["이너피스… (근엄)"],
+                        love: ["눈에서 꿀 떨어져요!"],
+                        excited: ["텐션 무엇?!"]
+                    }
+                }
+            },
+
+            bunny: {
+                sweet: { prefixes: ["(귀 쫑긋)", "포근포근~"], suffixes: ["사용자님, 다정하게 안아줄게요."], emoAdds: { sad: ["손수건 가져왔어요."], anxious: ["숨, 같이 세어봐요."] } },
+                normal: { prefixes: ["정리해볼게요."], suffixes: ["무리하지 말아요."], emoAdds: { tired: ["오늘은 쉬는 게 정답이에요."] } },
+                humor: { prefixes: ["토끼 등장!"], suffixes: ["당근… 말고 휴식!", "ㅋㅋ"], emoAdds: { angry: ["토끼도 화나면 깡총해요!"] } }
+            },
+
+            bear: {
+                sweet: { prefixes: ["(담요 툭)"], suffixes: ["여기서 잠깐 쉬어요."], emoAdds: { tired: ["따뜻한 이불 같은 시간 필요해요."] } },
+                normal: { prefixes: ["괜찮아요."], suffixes: ["지금은 안정이 우선이에요."], emoAdds: { anxious: ["호흡부터 잡아요."] } },
+                humor: { prefixes: ["곰 출동!"], suffixes: ["포근함은 합법이죠 ㅋㅋ"], emoAdds: { sad: ["오늘은 포근이 모드 ON!"] } }
+            },
+
+            cat: {
+                sweet: { prefixes: ["(모른 척 옆에)", "흥…"], suffixes: ["그래도… 제가 옆에 있죠."], emoAdds: { sad: ["울어도 돼요. (근데 살짝만)"] } },
+                normal: { prefixes: ["단도직입할게요."], suffixes: ["선은 지켜야죠."], emoAdds: { angry: ["그건 좀 아니에요."] } },
+                humor: { prefixes: ["냥냥 판단 시간~"], suffixes: ["간식은 협상 카드예요 ㅋㅋ"], emoAdds: { anxious: ["걱정? 일단 박스에 넣어둘까요?"] } }
+            },
+
+            dog: {
+                sweet: { prefixes: ["(꼬리 붕붕)", "좋아좋아!"], suffixes: ["사용자님, 제가 응원해요!"], emoAdds: { anxious: ["저 여기 있어요!"] } },
+                normal: { prefixes: ["가봅시다!"], suffixes: ["한 걸음씩요."], emoAdds: { tired: ["5분만 쉬고 다시!"] } },
+                humor: { prefixes: ["멍뭉이 출동!"], suffixes: ["간식 주면 더 잘해요 ㅋㅋ"], emoAdds: { happy: ["행복하면 세 바퀴 돌기!"] } }
+            },
+
+            fox: {
+                sweet: { prefixes: ["(살짝 장난)", "음~"], suffixes: ["플랜B도 있잖아요."], emoAdds: { anxious: ["불안에게 별명 붙여볼까요?"] } },
+                normal: { prefixes: ["전략적으로요."], suffixes: ["가능한 선택부터."], emoAdds: { angry: ["대응은 차분히, 마음은 인정."] } },
+                humor: { prefixes: ["여우식 해결법~"], suffixes: ["ㅋㅋ 이건 제가 이김"], emoAdds: { sad: ["숨통부터 틔워봅시다!"] } }
+            },
+
+            panda: {
+                sweet: { prefixes: ["(느린 호흡)", "천천히요."], suffixes: ["지금-여기만 봐요."], emoAdds: { calm: ["멍때리기 허가!"] } },
+                normal: { prefixes: ["관찰해볼게요."], suffixes: ["고요도 능력이에요."], emoAdds: { anxious: ["현재에 고정!"] } },
+                humor: { prefixes: ["판다 모드: 멍~"], suffixes: ["국보급 평화 보존!"], emoAdds: { tired: ["누워서 생각하죠 ㅋㅋ"] } }
+            }
+        };
+
+        function pickAnimal(keepAnimal = false) {
+            if (keepAnimal && lastAnimalId) {
+                const found = ANIMALS.find(a => a.id === lastAnimalId);
+                if (found) return found;
+            }
+            let pool = ANIMALS;
+            if (lastAnimalId && ANIMALS.length > 1) {
+                const filtered = ANIMALS.filter(a => a.id !== lastAnimalId);
+                if (filtered.length) pool = filtered;
+            }
+            const a = pick(pool);
+            lastAnimalId = a.id;
+            return a;
+        }
+
+        function buildAnimalMessage(animal, baseMsg, emotion) {
+            const packAll = VOICE[animal.id] || VOICE._default;
+            const pack = packAll[userTone] || VOICE._default[userTone];
+
+            const prefix = maybe(pack.prefixes, 0.45);
+            const emoAdd = maybe((pack.emoAdds && pack.emoAdds[emotion]) || [], 0.5);
+            const suffix = maybe(pack.suffixes, 0.55);
+
+            return [prefix, baseMsg, emoAdd, suffix]
+                .filter(Boolean)
+                .join(" ")
+                .replace(/\s+/g, " ")
+                .trim();
+        }
+
+        function pickNonRepeatingIndex(list, bucket) {
+            if (!list || list.length === 0) return 0;
+            const maxTries = 12;
+            for (let i = 0; i < maxTries; i++) {
+                const idx = Math.floor(Math.random() * list.length);
+                if (!hasRecent(recentBaseIdx, bucket, idx)) return idx;
+            }
+            // 전부 최근에 쓴 것뿐이면 그냥 랜덤(어쩔 수 없음)
+            return Math.floor(Math.random() * list.length);
+        }
+
         // Safe, Public Domain & Created Quotes
         const DAILY_QUOTES = [
             { t: "당신은 당신이 생각하는 것보다 더 강하고, 똑똑하고, 사랑받는 사람입니다.", a: "A.A. Milne" },
@@ -1386,6 +1684,7 @@
         let userInt = 'light';
         let lastEmotion = null;
         let audioCtx = null;
+        // let lastAnimalId = null; // Removed duplicate declaration
 
         /**
          * INITIALIZATION
@@ -1467,53 +1766,75 @@
             document.querySelectorAll('#intSelector .pill-btn').forEach(b => b.classList.toggle('active', b.dataset.v === int));
         }
 
-        function pickEmotion(emotion, isRetry = false) {
+        function pickEmotion(emotion, opts = {}) {
+            const { retry = false, keepAnimal = false } = opts;
+
             lastEmotion = emotion;
 
-            // Pick Animal
-            const animal = ANIMALS[Math.floor(Math.random() * ANIMALS.length)];
+            // 같은 동물이 계속 말하게(다른 한마디 버튼용) + 직전 동물 연속 방지
+            const animal = pickAnimal(keepAnimal);
 
-            // Pick Message based on Tone -> Emotion -> Intensity
+            // base 메시지 선택(말투/깊이/감정 버킷)
+            const bucket = `${userTone}|${userInt}|${emotion}`;
             const toneSet = LINES[userTone] || LINES.normal;
-            const moodSet = toneSet[emotion] || LINES.normal.calm; // fallback
+            const moodSet = toneSet[emotion] || LINES.normal.calm;
             const msgList = moodSet[userInt] || moodSet.light;
-            const msgText = msgList[Math.floor(Math.random() * msgList.length)];
 
-            // Pick Action (Action sentence)
-            const actList = animal.actions[emotion] || animal.actions['sad'] || ["조용히 곁에 있어 줍니다."]; // fallback
-            const actionText = actList[Math.floor(Math.random() * actList.length)];
+            // 최근 반복 방지(인덱스 + 최종문장)
+            let finalText = "";
+            for (let t = 0; t < 10; t++) {
+                const idx = pickNonRepeatingIndex(msgList, bucket);
+                const baseText = msgList[idx];
+                const composed = buildAnimalMessage(animal, baseText, emotion);
 
-            // Update UI
-            document.getElementById('welcomeArea').style.display = 'none';
+                if (!hasRecent(recentFinalText, bucket, composed)) {
+                    finalText = composed;
+                    pushRecent(recentBaseIdx, bucket, idx);
+                    pushRecent(recentFinalText, bucket, composed);
+                    break;
+                }
+            }
+            if (!finalText) {
+                // 혹시 몰라서 fallback
+                const idx = Math.floor(Math.random() * msgList.length);
+                finalText = buildAnimalMessage(animal, msgList[idx], emotion);
+            }
+
+            // 행동문장
+            const actList = animal.actions[emotion] || animal.actions['sad'] || ["조용히 곁에 있어 줍니다."];
+            const actionText = pick(actList);
+
+            // UI 업데이트
+            const welcomeArea = document.getElementById('welcomeArea');
+            if (welcomeArea) welcomeArea.style.display = 'none';
+
             const r = document.getElementById('resultArea');
             r.style.display = 'block';
 
-            // Animation reset
             const bubble = r.querySelector('.response-area');
             bubble.classList.remove('pop-anim');
             void bubble.offsetWidth;
             bubble.classList.add('pop-anim');
 
-            // Use textContent because we are back to text emoji
             document.getElementById('resAnimal').textContent = animal.emoji;
             document.getElementById('resName').textContent = animal.name;
-            // Tone Display Logic
+
             const toneName = { sweet: '다정', normal: '담백', humor: '유쾌' }[userTone];
             const intName = { light: '가볍게', deep: '깊게' }[userInt];
             document.getElementById('resTone').textContent = `${toneName} · ${intName}`;
 
-            document.getElementById('resMsg').textContent = msgText;
+            document.getElementById('resMsg').textContent = finalText;
             document.getElementById('resAct').textContent = actionText;
 
-            if (!isRetry) {
-                saveRecord(emotion, animal, msgText);
+            // retry라도 효과(사운드/이펙트/진동)는 주고,
+            // 기록/도감만 안 쌓이게 처리(체감은 좋아지고 데이터는 깔끔)
+            if (settings.vibe && navigator.vibrate) navigator.vibrate(retry ? 25 : 50);
+            if (settings.sound) playSound('pop');
+            if (settings.fx) createFloatEmoji(EMPATHY_EMOJIS[Math.floor(Math.random() * EMPATHY_EMOJIS.length)]);
+
+            if (!retry) {
+                saveRecord(emotion, animal, finalText);
                 updateCollection(animal);
-                if (settings.vibe && navigator.vibrate) navigator.vibrate(50);
-                if (settings.sound) playSound('pop');
-                if (settings.fx) {
-                    const randomEmoji = EMPATHY_EMOJIS[Math.floor(Math.random() * EMPATHY_EMOJIS.length)];
-                    createFloatEmoji(randomEmoji);
-                }
             }
         }
 
