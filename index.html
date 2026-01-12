@@ -1372,7 +1372,7 @@
             </div>
             <div style="font-size:4rem; margin:20px 0;" id="shEmoji">🙆</div>
             <p id="shText" style="font-size:1.1rem; line-height:1.5;">어깨를 귀까지 쭉 올려보세요</p>
-            <button class="btn" style="margin-top:20px;" onclick="nextSh()">다음</button>
+            <button class="btn" id="shBtn" style="margin-top:20px;" onclick="nextSh()">다음</button>
         </div>
     </div>
 
@@ -2181,6 +2181,7 @@
             </div>
             <div id="heartContainer" style="height:30px;"></div>
             <p id="petMsg" style="color:var(--muted); margin-top:10px;">친구를 쓰다듬어 주세요</p>
+            <button id="nextPetBtn" class="btn" style="display:none; margin-top:15px;" onclick="setupPetGame(document.getElementById('gameContent'))">🐾 다른 친구</button>
         </div>
     `;
 
@@ -2231,6 +2232,11 @@
                     if (speechBubble.style.display === 'none') {
                         speechBubble.style.display = 'block';
                         speechBubble.style.animation = 'popIn 0.5s ease';
+                    }
+                    // 다음 동물 버튼 표시
+                    const nextBtn = document.getElementById('nextPetBtn');
+                    if (nextBtn.style.display === 'none') {
+                        nextBtn.style.display = 'inline-block';
                     }
                 }
             });
@@ -2313,7 +2319,18 @@
         const shSteps = [{ e: '🙆', t: '어깨를 귀까지 올려보세요' }, { e: '😤', t: '5초간 꽉 힘주세요!' }, { e: '😌', t: '툭- 하고 힘을 빼세요' }, { e: '🧘', t: '한결 가벼워졌나요?' }];
         let shIdx = 0;
         function nextSh() {
-            shIdx = (shIdx + 1) % shSteps.length;
+            const btn = document.getElementById('shBtn');
+            // 마지막 단계에서 '처음부터' 버튼 누르면 초기화
+            if (shIdx >= shSteps.length - 1) {
+                shIdx = 0;
+                btn.textContent = '다음';
+            } else {
+                shIdx++;
+                // 마지막 단계 도달하면 버튼 텍스트 변경
+                if (shIdx >= shSteps.length - 1) {
+                    btn.textContent = '처음부터';
+                }
+            }
             document.getElementById('shEmoji').textContent = shSteps[shIdx].e;
             document.getElementById('shText').textContent = shSteps[shIdx].t;
             if (settings.vibe && navigator.vibrate) navigator.vibrate(30);
