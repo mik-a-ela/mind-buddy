@@ -2049,11 +2049,16 @@
             osc.connect(gain); gain.connect(audioCtx.destination);
         }
 
-        function createFloatEmoji(char) {
+        function createFloatEmoji(char, x, y) {
             if (!settings.fx) return;
             const el = document.createElement("div");
             el.className = "floating";
             el.textContent = char;
+            // 좌표가 제공되면 해당 위치에서 시작
+            if (x !== undefined && y !== undefined) {
+                el.style.left = x + 'px';
+                el.style.top = y + 'px';
+            }
             document.body.appendChild(el);
             setTimeout(() => el.remove(), 850);
         }
@@ -2067,16 +2072,34 @@
             openModal('gameModal');
         }
 
+        let infiniteRefillMode = false;
+
         function setupBubbleGame(container) {
+            infiniteRefillMode = false;
             container.innerHTML = `
         <div class="modal-header"><h3>🫧 버블랩</h3><button class="close-icon" onclick="closeModal('gameModal')">✕</button></div>
-        <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px;">
             <div style="font-size:0.9rem;">터트린 수: <strong id="popCount">0</strong></div>
-            <button class="btn" onclick="resetBubbles()">리필하기</button>
+            <div style="display:flex; gap:6px;">
+                <button class="btn" id="infiniteBtn" onclick="toggleInfiniteRefill()">♾️ 무한리필</button>
+                <button class="btn" onclick="resetBubbles()">리필하기</button>
+            </div>
         </div>
         <div class="pop-grid" id="popGrid"></div>
     `;
             resetBubbles();
+        }
+
+        function toggleInfiniteRefill() {
+            infiniteRefillMode = !infiniteRefillMode;
+            const btn = document.getElementById('infiniteBtn');
+            if (infiniteRefillMode) {
+                btn.style.background = 'var(--primary)';
+                btn.style.color = 'white';
+            } else {
+                btn.style.background = 'white';
+                btn.style.color = 'var(--ink)';
+            }
         }
 
         function resetBubbles() {
@@ -2088,17 +2111,35 @@
                 const b = document.createElement('div');
                 b.className = 'pop-btn';
                 b.innerHTML = ''; // Removed burst emoji
-                b.onclick = function () {
+                b.onclick = function (e) {
                     if (this.classList.contains('popped')) return;
                     this.classList.add('popped', 'popping');
                     playSound('pop');
                     if (settings.vibe && navigator.vibrate) navigator.vibrate(15);
                     if (settings.fx) {
                         const randomEmoji = EMPATHY_EMOJIS[Math.floor(Math.random() * EMPATHY_EMOJIS.length)];
-                        createFloatEmoji(randomEmoji);
+                        // 클릭한 버블 위치에서 이모지 생성
+                        const rect = this.getBoundingClientRect();
+                        const x = rect.left + rect.width / 2;
+                        const y = rect.top;
+                        createFloatEmoji(randomEmoji, x, y);
                     }
                     const cnt = document.getElementById('popCount');
                     cnt.textContent = parseInt(cnt.textContent) + 1;
+
+                    // 무한리필 모드: 10개 이상 터뜨렸으면 1개 자동 복원
+                    if (infiniteRefillMode) {
+                        const poppedCount = document.querySelectorAll('.pop-btn.popped').length;
+                        if (poppedCount >= 10) {
+                            setTimeout(() => {
+                                const poppedBubbles = document.querySelectorAll('.pop-btn.popped');
+                                if (poppedBubbles.length > 0) {
+                                    const randomIndex = Math.floor(Math.random() * poppedBubbles.length);
+                                    poppedBubbles[randomIndex].classList.remove('popped', 'popping');
+                                }
+                            }, 150);
+                        }
+                    }
                 };
                 grid.appendChild(b);
             }
@@ -2147,7 +2188,7 @@
         }
 
         function setupIceGame(container) {
-            let hp = 12; // 12 hits like merged version
+            let hp = 20; // 20 hits for more engagement
             container.innerHTML = `
         <div class="modal-header"><h3>얼음 깨기</h3><button class="close-icon" onclick="closeModal('gameModal')">✕</button></div>
         <div style="text-align:center; padding:20px;">
