@@ -2081,7 +2081,10 @@
             container.innerHTML = `
         <div class="modal-header"><h3>🫧 버블랩</h3><button class="close-icon" onclick="closeModal('gameModal')">✕</button></div>
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px;">
-            <div style="font-size:0.9rem;">터트린 수: <strong id="popCount">0</strong></div>
+            <div style="text-align:center;">
+                <div style="font-size:0.8rem; color:var(--muted);">터트린 수</div>
+                <div style="font-size:1.4rem; font-weight:bold;" id="popCount">0</div>
+            </div>
             <div style="display:flex; gap:6px;">
                 <button class="btn" id="infiniteBtn" onclick="toggleInfiniteRefill()">♾️ 무한리필</button>
                 <button class="btn" onclick="resetBubbles()">리필하기</button>
