@@ -1280,32 +1280,28 @@
                 <button class="notice-btn" style="margin-top:10px; width:100%" onclick="openModal('noticeModal')">⚠️
                     주의사항 및 도움처</button>
             </div>
+
+            <!-- 마인드 버디 안내 카드 -->
+            <div class="card" id="guideSection">
+                <h2 class="card-title">📚 마인드 버디 안내</h2>
+                <div class="intro-faq">
+                    <div class="faq-q">마인드 버디는 어떤 서비스인가요?</div>
+                    <div class="faq-a">감정을 "이름 붙여서" 가볍게 정리하고, 하루를 조금 더 편하게 보내도록 돕는 간단한 웹 도구예요.</div>
+
+                    <div class="faq-q">기록은 어디에 저장되나요?</div>
+                    <div class="faq-a">브라우저의 로컬 저장소(localStorage)에 저장돼요. 같은 기기/브라우저에서는 유지되지만, 데이터 삭제/기기 변경 시 사라질 수 있어요.
+                    </div>
+
+                    <div class="faq-q">안내 및 유의사항</div>
+                    <div class="faq-a">이 서비스는 의료/상담/치료 목적이 아니며, 전문적인 도움을 대체하지 않아요. 일상 기능으로 가볍게 활용해 주세요.</div>
+                </div>
+                <div style="display:flex; gap:10px; justify-content:center; margin-top:14px;">
+                    <button class="btn" onclick="openModal('privacyModal')">개인정보</button>
+                    <button class="btn" id="contactBtn">문의하기</button>
+                </div>
+            </div>
         </div>
     </div>
-
-    <!-- SEO Footer Section -->
-    <section class="seo-intro" style="margin: 20px 16px 100px;">
-        <div class="card" id="guideSection">
-            <h2 class="card-title">📚 마인드 버디 안내</h2>
-
-            <div class="intro-faq">
-                <div class="faq-q">마인드 버디는 어떤 서비스인가요?</div>
-                <div class="faq-a">감정을 "이름 붙여서" 가볍게 정리하고, 하루를 조금 더 편하게 보내도록 돕는 간단한 웹 도구예요.</div>
-
-                <div class="faq-q">기록은 어디에 저장되나요?</div>
-                <div class="faq-a">브라우저의 로컬 저장소(localStorage)에 저장돼요. 같은 기기/브라우저에서는 유지되지만, 데이터 삭제/기기 변경 시 사라질 수 있어요.
-                </div>
-
-                <div class="faq-q">안내 및 유의사항</div>
-                <div class="faq-a">이 서비스는 의료/상담/치료 목적이 아니며, 전문적인 도움을 대체하지 않아요. 일상 기능으로 가볍게 활용해 주세요.</div>
-            </div>
-
-            <div style="display:flex; gap:10px; justify-content:center; margin-top:14px;">
-                <button class="btn" onclick="openModal('privacyModal')">개인정보</button>
-                <button class="btn" id="contactBtn">문의하기</button>
-            </div>
-        </div>
-    </section>
 
     <!-- Bottom Navigation -->
     <nav class="tab-nav">
