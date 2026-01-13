@@ -1269,6 +1269,9 @@
             <div class="card">
                 <h2 class="card-title">📅 이번 주 감정</h2>
                 <div class="week-grid" id="weekGrid"></div>
+                <button class="btn" id="weekSaveBtn" style="width:100%; margin-top:10px;">
+                    🖼️ 주간 요약 이미지 저장
+                </button>
             </div>
             <div class="card">
                 <h2 class="card-title">📝 최근 기록</h2>
@@ -1427,6 +1430,20 @@
         </div>
     </div>
 
+    <!-- Day Summary Modal -->
+    <div class="modal-overlay" id="dayModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3 id="dayModalTitle">📅 하루 요약</h3>
+                <button class="close-icon" onclick="closeModal('dayModal')">✕</button>
+            </div>
+            <div id="dayModalBody"></div>
+            <button class="btn" style="width:100%; margin-top:12px;" id="dayModalSaveBtn">
+                🖼️ 이미지로 저장
+            </button>
+        </div>
+    </div>
+
     <script>
         /**
          * 감정별 기본 행동 (동물에 해당 감정 액션이 없을 때 fallback)
@@ -1459,6 +1476,53 @@
             { id: 'raccoon', emoji: '🦝', name: '뽀짝이', pers: '만세 시그니처에 애교 만렙인', desc: '만세! 하트뿅! 부비부비! 귀여움 3단 콤보 라쿤', actions: { happy: ["두 앞발 번쩍! 만세- 하고 폴짝 뛰어요.", "만세 자세로 파닥파닥 흔들며 '좋다아!' 해요.", "만세하고 빙글 한 바퀴 돌고, 하트뿅까지 날려요."], excited: ["만세! 만세! 하고 연속 폴짝폴짝 점프해요.", "두 손 번쩍 들고 '가자아!' 하며 꼬리를 흔들어요.", "만세 → 하트뿅 → '두근두근!' 표정으로 고개를 끄덕여요."], calm: ["손을 작게 번쩍 들었다가, 조용히 내려놓고 옆에 딱 붙어 있어요.", "숨을 같이 맞추려는 듯 고개를 끄덕끄덕… 해요.", "작게 하트를 만들고 '괜찮아요' 하는 눈빛을 줘요."], love: ["하트를 뿅! 하고 만들어서 조심히 내밀어요.", "볼을 부비부비하고 '좋아해요…!' 하고 웃어요.", "만세는 아니고…(부끄) 손만 살짝 번쩍 들고 미소 지어요."], tired: ["작은 담요를 끌어오는 시늉을 하고 '5분만 쉬어요…' 해요.", "하품을 크게 하고는 '같이 충전해요' 하고 고개를 기대요.", "만세 대신… 손을 번쩍 들었다가 '휴식!' 하고 내려요."], sad: ["두 앞발로 토닥토닥… '여기 있어요' 하고 아주 작게 말해요.", "말없이 옆에 붙어서 손수건을 살짝 밀어줘요.", "하트를 뿅… 했다가 '오늘은 조용히' 하고 고개를 숙여요."], angry: ["입을 삐죽… '속상했겠다…!' 하고 두 주먹을 꼭 쥐어요.", "'우리 숨 한 번만!' 하고 손바닥을 펼쳐 천천히 흔들어요.", "만세는 잠깐 접고… '그건 진짜 억울했겠다' 하고 딱 붙어 있어요."], anxious: ["작은 손을 흔들며 '괜찮아요, 천천히요!' 하고 안내해요.", "손가락 하나를 들어 '하나씩!' 하고 눈빛을 줘요.", "하트뿅을 작게 보내고, 숨을 같이 맞추자고 고개를 끄덕여요."] } },
             { id: 'owl', emoji: '🦉', name: '밤새미', pers: '차분하고 단단한', desc: '마음을 한 줄로 정리해주는 올빼미', actions: { happy: ["고개를 갸웃하며 '좋은 흐름이에요' 하고 눈웃음 지어요.", "날개를 살짝 펴서 조용히 축하해줘요."], excited: ["'기대감이 커요' 하고 눈을 반짝여요.", "작게 끄덕이며 '잘 될 확률 높아요' 해요."], calm: ["조용히 눈을 감고 같이 고요해져요.", "'지금 충분히 안정적이에요' 하고 천천히 말해줘요."], love: ["부드럽게 고개를 숙여 예의를 담아 인사해요.", "'그 마음이 참 따뜻해요' 하고 눈웃음 지어요."], tired: ["'우선 회복부터요' 하고 의자에 앉는 제스처를 해요.", "날개로 바람막이처럼 옆을 지켜줘요."], sad: ["말을 아끼고 곁에 조용히 서 있어요.", "'슬픔은 자연스러운 반응이에요' 하고 고개를 끄덕여요."], angry: ["'경계가 침범됐을 수 있어요' 하고 차분히 정리해줘요.", "숨을 고르고 나서 말하자고 손짓해요."], anxious: ["'지금 할 수 있는 것 1개만' 하자고 손가락 하나를 들어요.", "시선을 낮춰 '현재'로 돌아오자고 안내해요."] } }
         ];
+
+        // ===== 날짜 키(로컬 기준) =====
+        function toISODateLocal(d) {
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        }
+        function formatKoreanISO(iso) {
+            const [y, m, d] = iso.split('-');
+            return `${y}.${m}.${d}`;
+        }
+
+        // ===== 감정 메타 =====
+        const EMO_META = {
+            happy: { emoji: "😊", label: "행복" },
+            excited: { emoji: "🤩", label: "설렘" },
+            calm: { emoji: "😌", label: "평온" },
+            love: { emoji: "🥰", label: "사랑" },
+            tired: { emoji: "😴", label: "피곤" },
+            sad: { emoji: "😢", label: "슬픔" },
+            angry: { emoji: "😤", label: "화남" },
+            anxious: { emoji: "😰", label: "불안" }
+        };
+
+        // ===== 저장소 키 =====
+        const KEY_TODAY = 'mb_today_recs';
+        const KEY_DAYCOUNTS = 'mb_day_counts';
+
+        // 오늘 버킷 초기화(날짜 바뀌면 자동 리셋)
+        function ensureTodayBucket() {
+            const todayISO = toISODateLocal(new Date());
+            const bucket = JSON.parse(localStorage.getItem(KEY_TODAY) || '{}');
+            if (bucket.date !== todayISO || !Array.isArray(bucket.recs)) {
+                localStorage.setItem(KEY_TODAY, JSON.stringify({ date: todayISO, recs: [] }));
+            }
+            return JSON.parse(localStorage.getItem(KEY_TODAY));
+        }
+
+        // 날짜별 카운트 증가
+        function bumpDayCount(emotion, iso = toISODateLocal(new Date())) {
+            const all = JSON.parse(localStorage.getItem(KEY_DAYCOUNTS) || '{}');
+            if (!all[iso]) all[iso] = { total: 0, emotions: {} };
+            all[iso].total += 1;
+            all[iso].emotions[emotion] = (all[iso].emotions[emotion] || 0) + 1;
+            localStorage.setItem(KEY_DAYCOUNTS, JSON.stringify(all));
+        }
 
         // Rich Messages Data (From mind-buddy-merged)
         const LINES = {
@@ -1731,6 +1795,8 @@
             const s = localStorage.getItem('mb_settings');
             if (s) settings = JSON.parse(s);
 
+            ensureTodayBucket();
+
             document.getElementById('toggleSound').classList.toggle('on', settings.sound);
             document.getElementById('toggleVibe').classList.toggle('on', settings.vibe);
             document.getElementById('toggleFx').classList.toggle('on', settings.fx);
@@ -1738,6 +1804,11 @@
             updateStats();
             updateHistory();
             updateWeekGrid();
+
+            const weekBtn = document.getElementById('weekSaveBtn');
+            if (weekBtn) weekBtn.onclick = downloadWeekSummaryImage;
+
+            checkDailyQuoteDisplay();
         }
 
         /**
@@ -1783,8 +1854,16 @@
         }
 
         function checkDailyQuoteDisplay() {
-            // Optional: Visually change the envelope if already opened?
-            // For now, we keep it clickable anytime to re-read today's quote.
+            const card = document.getElementById('dailyQuoteArea');
+            if (!card) return;
+            card.style.background = '';
+            card.style.opacity = '';
+            const today = new Date().toDateString();
+            const stored = JSON.parse(localStorage.getItem('mb_daily_quote') || '{}');
+            if (stored.date === today && stored.opened) {
+                card.style.background = "#fff";
+                card.style.opacity = "0.9";
+            }
         }
 
         /**
@@ -1893,18 +1972,21 @@
         }
 
         function saveRecord(emotion, animal, msg) {
-            const recs = safeParse('mb_recs', []);
+            bumpDayCount(emotion);
+
+            const bucket = ensureTodayBucket();
             const now = new Date();
-            const isoDate = now.toISOString().slice(0, 10);
-            recs.unshift({
+
+            bucket.recs.unshift({
                 ts: now.toISOString(),
-                isoDate: isoDate,
                 date: now.toLocaleDateString(),
                 time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 emotion, animal, msg
             });
-            if (recs.length > 100) recs.pop();
-            localStorage.setItem('mb_recs', JSON.stringify(recs));
+
+            if (bucket.recs.length > 100) bucket.recs.pop();
+            localStorage.setItem(KEY_TODAY, JSON.stringify(bucket));
+
             updateHistory();
             updateWeekGrid();
         }
@@ -1941,40 +2023,289 @@
         }
 
         function updateHistory() {
-            const recs = JSON.parse(localStorage.getItem('mb_recs') || '[]');
+            const bucket = ensureTodayBucket();
+            const recs = bucket.recs || [];
             const list = document.getElementById('historyList');
             const mapEmo = { happy: '😊', sad: '😢', angry: '😤', anxious: '😰', tired: '😴', excited: '🤩', calm: '😌', love: '🥰' };
 
             if (recs.length === 0) {
-                list.innerHTML = '<li style="text-align:center; padding:20px; color:var(--muted);">아직 기록이 없어요 📝</li>';
+                list.innerHTML = '<li style="text-align:center; padding:20px; color:var(--muted);">오늘 기록이 아직 없어요 📝</li>';
                 return;
             }
-            list.innerHTML = recs.slice(0, 20).map(r => `
-        <li class="hist-item">
-            <div style="font-size:1.5rem;">${mapEmo[r.emotion] || '😐'}</div>
-            <div style="flex:1;">
-                <div style="font-size:0.75rem; color:var(--muted);">${r.date} ${r.time}</div>
-                <div style="font-size:0.85rem; color:var(--ink);">${r.msg}</div>
-            </div>
-            <div style="font-size:1.2rem; display: flex; align-items: center;">${r.animal.emoji}</div>
-        </li>
-    `).join('');
+            list.innerHTML = recs.slice(0, 100).map(r => `
+                <li class="hist-item">
+                    <div style="font-size:1.5rem;">${mapEmo[r.emotion] || '😐'}</div>
+                    <div style="flex:1;">
+                        <div style="font-size:0.75rem; color:var(--muted);">${r.date} ${r.time}</div>
+                        <div style="font-size:0.85rem; color:var(--ink);">${r.msg}</div>
+                    </div>
+                    <div style="font-size:1.2rem; display:flex; align-items:center;">${r.animal.emoji}</div>
+                </li>
+            `).join('');
         }
 
         function updateWeekGrid() {
-            const recs = JSON.parse(localStorage.getItem('mb_recs') || '[]');
             const grid = document.getElementById('weekGrid');
             grid.innerHTML = '';
+            const all = JSON.parse(localStorage.getItem(KEY_DAYCOUNTS) || '{}');
             const today = new Date();
+            const todayISO = toISODateLocal(today);
+
             for (let i = 0; i < 7; i++) {
                 const d = new Date(today);
-                d.setDate(today.getDate() - (6 - i)); // Show last 7 days ending today
-                const dayStr = d.toLocaleDateString();
-                const dayRecs = recs.filter(r => r.date === dayStr);
-                let content = '';
-                if (dayRecs.length > 0) content = '<div style="width:6px; height:6px; background:var(--primary); border-radius:50%;"></div>';
-                grid.innerHTML += `<div class="day-cell ${i === 6 ? 'today' : ''}"><span>${d.getDate()}</span>${content}</div>`;
+                d.setDate(today.getDate() - (6 - i));
+                const iso = toISODateLocal(d);
+                const dayData = all[iso];
+                const has = dayData && dayData.total > 0;
+                const dot = has ? '<div style="width:6px; height:6px; background:var(--primary); border-radius:50%;"></div>' : '';
+                grid.innerHTML += `
+                    <div class="day-cell ${iso === todayISO ? 'today' : ''}"
+                         style="cursor:pointer;"
+                         onclick="openDaySummary('${iso}')">
+                        <span>${d.getDate()}</span>
+                        ${dot}
+                    </div>
+                `;
             }
+        }
+
+        function openDaySummary(iso) {
+            const all = JSON.parse(localStorage.getItem(KEY_DAYCOUNTS) || '{}');
+            const dayData = all[iso];
+
+            document.getElementById('dayModalTitle').textContent = `📅 ${formatKoreanISO(iso)} 감정 요약`;
+            const body = document.getElementById('dayModalBody');
+
+            if (!dayData || !dayData.total) {
+                body.innerHTML = `
+                    <div style="text-align:center; padding:18px; color:var(--muted);">
+                        이 날은 기록이 없어요 🙂
+                    </div>
+                `;
+            } else {
+                const rows = Object.keys(EMO_META)
+                    .map(k => ({ k, c: dayData.emotions?.[k] || 0 }))
+                    .filter(x => x.c > 0)
+                    .sort((a, b) => b.c - a.c);
+
+                body.innerHTML = `
+                    <div style="background:white; border-radius:18px; padding:14px; box-shadow: var(--shadow2);">
+                        <div style="display:flex; justify-content:space-between; color:var(--muted); font-size:0.85rem; margin-bottom:10px;">
+                            <span>총 클릭</span><strong style="color:var(--ink);">${dayData.total}회</strong>
+                        </div>
+                        <div style="display:grid; gap:10px;">
+                            ${rows.map(r => `
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <div style="display:flex; align-items:center; gap:10px;">
+                                        <span style="font-size:1.4rem;">${EMO_META[r.k].emoji}</span>
+                                        <span style="color:var(--ink);">${EMO_META[r.k].label}</span>
+                                    </div>
+                                    <strong style="color:var(--ink);">${r.c}회</strong>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div style="margin-top:12px; color:var(--muted); font-size:0.78rem; line-height:1.4;">
+                            * 메시지 기록은 오늘 것만 최대 100개 저장돼요.
+                        </div>
+                    </div>
+                `;
+            }
+
+            const btn = document.getElementById('dayModalSaveBtn');
+            btn.onclick = () => downloadDaySummaryImage(iso);
+            openModal('dayModal');
+        }
+
+        function downloadDaySummaryImage(iso) {
+            const all = JSON.parse(localStorage.getItem(KEY_DAYCOUNTS) || '{}');
+            const dayData = all[iso] || { total: 0, emotions: {} };
+
+            const W = 1080, H = 1350;
+            const canvas = document.createElement('canvas');
+            canvas.width = W; canvas.height = H;
+            const ctx = canvas.getContext('2d');
+
+            const g = ctx.createLinearGradient(0, 0, 0, H);
+            g.addColorStop(0, '#fffaf6');
+            g.addColorStop(1, '#ffe8f2');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+
+            ctx.fillStyle = '#4a4542';
+            ctx.font = '72px Jua, sans-serif';
+            ctx.fillText('마인드 버디', 80, 140);
+
+            ctx.font = '44px Gowun Dodum, sans-serif';
+            ctx.fillStyle = '#6b645f';
+            ctx.fillText(`${formatKoreanISO(iso)} 감정 요약`, 80, 220);
+
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            roundRect(ctx, 60, 280, W - 120, 860, 40);
+            ctx.fill();
+
+            ctx.fillStyle = '#8c837d';
+            ctx.font = '36px Gowun Dodum, sans-serif';
+            ctx.fillText('총 클릭', 110, 360);
+
+            ctx.fillStyle = '#4a4542';
+            ctx.font = 'bold 46px Gowun Dodum, sans-serif';
+            ctx.fillText(`${dayData.total}회`, 880, 360);
+
+            let y = 450;
+            const rows = Object.keys(EMO_META)
+                .map(k => ({ k, c: dayData.emotions?.[k] || 0 }))
+                .filter(x => x.c > 0)
+                .sort((a, b) => b.c - a.c);
+
+            if (rows.length === 0) {
+                ctx.fillStyle = '#8c837d';
+                ctx.font = '40px Gowun Dodum, sans-serif';
+                ctx.fillText('기록 없음 🙂', 110, y);
+            } else {
+                rows.forEach(r => {
+                    const meta = EMO_META[r.k];
+                    ctx.font = '56px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji", sans-serif';
+                    ctx.fillText(meta.emoji, 110, y);
+
+                    ctx.fillStyle = '#4a4542';
+                    ctx.font = '40px Gowun Dodum, sans-serif';
+                    ctx.fillText(meta.label, 190, y);
+
+                    ctx.fillStyle = '#4a4542';
+                    ctx.font = 'bold 44px Gowun Dodum, sans-serif';
+                    ctx.fillText(`${r.c}회`, 880, y);
+                    y += 90;
+                });
+            }
+
+            ctx.fillStyle = '#8c837d';
+            ctx.font = '30px Gowun Dodum, sans-serif';
+            ctx.fillText('마인드 버디는 서버에 저장하지 않아요. 이 기기(LocalStorage)에만 저장돼요.', 80, H - 120);
+
+            const a = document.createElement('a');
+            a.download = `mind-buddy-${iso}-summary.png`;
+            a.href = canvas.toDataURL('image/png');
+            a.click();
+        }
+
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.arcTo(x + w, y, x + w, y + h, r);
+            ctx.arcTo(x + w, y + h, x, y + h, r);
+            ctx.arcTo(x, y + h, x, y, r);
+            ctx.arcTo(x, y, x + w, y, r);
+            ctx.closePath();
+        }
+
+        function getLastNDays(n) {
+            const out = [];
+            const base = new Date();
+            for (let i = n - 1; i >= 0; i--) {
+                const d = new Date(base);
+                d.setDate(base.getDate() - i);
+                out.push({ d, iso: toISODateLocal(d) });
+            }
+            return out;
+        }
+
+        function getTopEmotionKey(emotionsObj) {
+            if (!emotionsObj) return null;
+            let bestK = null;
+            let bestV = -1;
+            for (const k of Object.keys(emotionsObj)) {
+                const v = emotionsObj[k] || 0;
+                if (v > bestV) { bestV = v; bestK = k; }
+            }
+            return bestK;
+        }
+
+        function downloadWeekSummaryImage() {
+            const all = JSON.parse(localStorage.getItem(KEY_DAYCOUNTS) || '{}');
+            const days = getLastNDays(7);
+            const weekDaysKo = ['일', '월', '화', '수', '목', '금', '토'];
+
+            const W = 1080, H = 1350;
+            const canvas = document.createElement('canvas');
+            canvas.width = W; canvas.height = H;
+            const ctx = canvas.getContext('2d');
+
+            const g = ctx.createLinearGradient(0, 0, 0, H);
+            g.addColorStop(0, '#fffaf6');
+            g.addColorStop(1, '#ffe8f2');
+            ctx.fillStyle = g;
+            ctx.fillRect(0, 0, W, H);
+
+            ctx.fillStyle = '#4a4542';
+            ctx.font = '72px Jua, sans-serif';
+            ctx.fillText('마인드 버디', 80, 140);
+
+            ctx.font = '44px Gowun Dodum, sans-serif';
+            ctx.fillStyle = '#6b645f';
+            ctx.fillText('이번 주 감정 요약 (최근 7일)', 80, 220);
+
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            roundRect(ctx, 60, 280, W - 120, 880, 40);
+            ctx.fill();
+
+            let y = 380;
+            let totalWeek = 0;
+
+            days.forEach(({ d, iso }) => {
+                const data = all[iso] || { total: 0, emotions: {} };
+                totalWeek += (data.total || 0);
+
+                const dow = weekDaysKo[d.getDay()];
+                const mm = String(d.getMonth() + 1);
+                const dd = String(d.getDate());
+                const label = `${mm}.${dd} (${dow})`;
+
+                const topK = getTopEmotionKey(data.emotions);
+                const topEmoji = topK && EMO_META[topK] ? EMO_META[topK].emoji : '▫️';
+                const topLabel = topK && EMO_META[topK] ? EMO_META[topK].label : '기록 없음';
+
+                ctx.fillStyle = '#8c837d';
+                ctx.font = '36px Gowun Dodum, sans-serif';
+                ctx.fillText(label, 110, y);
+
+                ctx.font = '46px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji", sans-serif';
+                ctx.fillText(topEmoji, 520, y);
+
+                ctx.fillStyle = '#4a4542';
+                ctx.font = '34px Gowun Dodum, sans-serif';
+                ctx.fillText(topLabel, 590, y);
+
+                ctx.fillStyle = '#4a4542';
+                ctx.font = 'bold 42px Gowun Dodum, sans-serif';
+                ctx.fillText(`${data.total || 0}회`, 880, y);
+
+                ctx.strokeStyle = 'rgba(140,131,125,0.25)';
+                ctx.beginPath();
+                ctx.moveTo(110, y + 25);
+                ctx.lineTo(W - 110, y + 25);
+                ctx.stroke();
+
+                y += 110;
+            });
+
+            ctx.fillStyle = '#8c837d';
+            ctx.font = '36px Gowun Dodum, sans-serif';
+            ctx.fillText('주간 총 클릭', 110, 1120);
+
+            ctx.fillStyle = '#4a4542';
+            ctx.font = 'bold 52px Gowun Dodum, sans-serif';
+            ctx.fillText(`${totalWeek}회`, 820, 1120);
+
+            ctx.fillStyle = '#8c837d';
+            ctx.font = '30px Gowun Dodum, sans-serif';
+            ctx.fillText('메시지 기록은 오늘 것만 최대 100개 저장돼요. (요약 카운트는 날짜별로 누적)', 80, H - 150);
+            ctx.fillText('데이터는 서버가 아니라 이 기기(LocalStorage)에만 저장돼요.', 80, H - 110);
+
+            const a = document.createElement('a');
+            const todayISO = toISODateLocal(new Date());
+            a.download = `mind-buddy-week-${todayISO}.png`;
+            a.href = canvas.toDataURL('image/png');
+            a.click();
         }
 
         /**
