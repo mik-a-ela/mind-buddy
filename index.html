@@ -38,6 +38,7 @@
             --shadow2: 0 4px 20px rgba(40, 25, 15, 0.04);
             --primary: #FFB5A7;
             --green: #C5D5CB;
+            --brown: #5D4037;
             --radius: 24px;
             --radius-sm: 16px;
         }
@@ -987,24 +988,32 @@
         /* Updated Floating Emoji Size */
         .floating {
             position: fixed;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
             z-index: 999;
             pointer-events: none;
             font-size: 1.5rem;
-            animation: floatCenter 0.8s ease-out forwards;
+            animation: floatFromClick 0.8s ease-out forwards;
         }
 
-        @keyframes floatCenter {
+        @keyframes floatFromClick {
             0% {
                 opacity: 1;
-                transform: translate(-50%, -50%) scale(0.5);
+                transform: scale(0.5) translateY(0);
             }
 
             100% {
                 opacity: 0;
-                transform: translate(-50%, -100px) scale(1.5);
+                transform: scale(1.5) translateY(-80px);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation: none !important;
+                transition: none !important;
+            }
+
+            body {
+                background-attachment: scroll;
             }
         }
 
@@ -1128,14 +1137,22 @@
                 </div>
 
                 <div class="emotion-grid">
-                    <button class="emotion-btn" onclick="pickEmotion('happy')" title="행복">😊</button>
-                    <button class="emotion-btn" onclick="pickEmotion('excited')" title="설렘">🤩</button>
-                    <button class="emotion-btn" onclick="pickEmotion('calm')" title="평온">😌</button>
-                    <button class="emotion-btn" onclick="pickEmotion('love')" title="사랑">🥰</button>
-                    <button class="emotion-btn" onclick="pickEmotion('tired')" title="피곤">😴</button>
-                    <button class="emotion-btn" onclick="pickEmotion('sad')" title="슬픔">😢</button>
-                    <button class="emotion-btn" onclick="pickEmotion('angry')" title="화남">😤</button>
-                    <button class="emotion-btn" onclick="pickEmotion('anxious')" title="불안">😰</button>
+                    <button class="emotion-btn" onclick="pickEmotion('happy', {}, event)" aria-label="행복"
+                        title="행복">😊</button>
+                    <button class="emotion-btn" onclick="pickEmotion('excited', {}, event)" aria-label="설렘"
+                        title="설렘">🤩</button>
+                    <button class="emotion-btn" onclick="pickEmotion('calm', {}, event)" aria-label="평온"
+                        title="평온">😌</button>
+                    <button class="emotion-btn" onclick="pickEmotion('love', {}, event)" aria-label="사랑"
+                        title="사랑">🥰</button>
+                    <button class="emotion-btn" onclick="pickEmotion('tired', {}, event)" aria-label="피곤"
+                        title="피곤">😴</button>
+                    <button class="emotion-btn" onclick="pickEmotion('sad', {}, event)" aria-label="슬픔"
+                        title="슬픔">😢</button>
+                    <button class="emotion-btn" onclick="pickEmotion('angry', {}, event)" aria-label="화남"
+                        title="화남">😤</button>
+                    <button class="emotion-btn" onclick="pickEmotion('anxious', {}, event)" aria-label="불안"
+                        title="불안">😰</button>
                 </div>
             </div>
 
@@ -1293,19 +1310,19 @@
 
     <!-- Bottom Navigation -->
     <nav class="tab-nav">
-        <button class="tab-btn active" onclick="switchTab('emotion', this)">
+        <button class="tab-btn active" onclick="switchTab('emotion', this)" aria-label="감정 탭">
             <span class="icon">💭</span><span>감정</span>
         </button>
-        <button class="tab-btn" onclick="switchTab('games', this)">
+        <button class="tab-btn" onclick="switchTab('games', this)" aria-label="해소 탭">
             <span class="icon">🎮</span><span>해소</span>
         </button>
-        <button class="tab-btn" onclick="switchTab('collection', this)">
+        <button class="tab-btn" onclick="switchTab('collection', this)" aria-label="도감 탭">
             <span class="icon">🐾</span><span>도감</span>
         </button>
-        <button class="tab-btn" onclick="switchTab('records', this)">
+        <button class="tab-btn" onclick="switchTab('records', this)" aria-label="기록 탭">
             <span class="icon">📊</span><span>기록</span>
         </button>
-        <button class="tab-btn" onclick="switchTab('settings', this)">
+        <button class="tab-btn" onclick="switchTab('settings', this)" aria-label="설정 탭">
             <span class="icon">⚙️</span><span>설정</span>
         </button>
     </nav>
@@ -1782,7 +1799,7 @@
             document.querySelectorAll('#intSelector .pill-btn').forEach(b => b.classList.toggle('active', b.dataset.v === int));
         }
 
-        function pickEmotion(emotion, opts = {}) {
+        function pickEmotion(emotion, opts = {}, event = null) {
             const { retry = false, keepAnimal = false } = opts;
 
             lastEmotion = emotion;
@@ -1848,7 +1865,17 @@
             // 기록/도감만 안 쌓이게 처리(체감은 좋아지고 데이터는 깔끔)
             if (settings.vibe && navigator.vibrate) navigator.vibrate(retry ? 25 : 50);
             if (settings.sound) playSound('pop');
-            if (settings.fx) createFloatEmoji(EMPATHY_EMOJIS[Math.floor(Math.random() * EMPATHY_EMOJIS.length)]);
+            if (settings.fx) {
+                const randomEmoji = EMPATHY_EMOJIS[Math.floor(Math.random() * EMPATHY_EMOJIS.length)];
+                if (event && event.target) {
+                    const rect = event.target.getBoundingClientRect();
+                    const x = rect.left + rect.width / 2;
+                    const y = rect.top + rect.height / 2;
+                    createFloatEmoji(randomEmoji, x, y);
+                } else {
+                    createFloatEmoji(randomEmoji);
+                }
+            }
 
             if (!retry) {
                 saveRecord(emotion, animal, finalText);
@@ -1856,11 +1883,22 @@
             }
         }
 
+        function safeParse(key, fallback) {
+            try {
+                const raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : fallback;
+            } catch (e) {
+                return fallback;
+            }
+        }
+
         function saveRecord(emotion, animal, msg) {
-            const recs = JSON.parse(localStorage.getItem('mb_recs') || '[]');
+            const recs = safeParse('mb_recs', []);
             const now = new Date();
+            const isoDate = now.toISOString().slice(0, 10);
             recs.unshift({
                 ts: now.toISOString(),
+                isoDate: isoDate,
                 date: now.toLocaleDateString(),
                 time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
                 emotion, animal, msg
@@ -1961,7 +1999,8 @@
         function openModal(id) { document.getElementById(id).classList.add('open'); }
         function closeModal(id) {
             document.getElementById(id).classList.remove('open');
-            if (id === 'groundModal') resetGr(); // Reset grounding
+            if (id === 'groundModal') resetGr();
+            if (id === 'breathModal') stopBreath();
         }
         document.querySelectorAll('.modal-overlay').forEach(m => m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); }));
 
@@ -2298,6 +2337,18 @@
          * TOOLS: Breath, Shoulder, Grounding
          */
         let brTimer = null;
+
+        function stopBreath() {
+            if (brTimer) {
+                clearTimeout(brTimer);
+                brTimer = null;
+            }
+            const c = document.getElementById('brCircle');
+            const t = document.getElementById('brText');
+            if (c) { c.textContent = "시작"; c.style.transform = "scale(1)"; }
+            if (t) t.textContent = "원을 터치하세요";
+        }
+
         function runBreath() {
             if (brTimer) return;
             const c = document.getElementById('brCircle');
