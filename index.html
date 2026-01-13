@@ -1266,9 +1266,13 @@
 
         <!-- Tab 4: Records -->
         <div id="tab-records" class="tab-content">
-            <div class="card">
-                <h2 class="card-title">📅 이번 주 감정</h2>
-                <div class="week-grid" id="weekGrid"></div>
+            <div class="card" id="weekCard">
+                <div id="weekCardCapture">
+                    <h2 class="card-title">📅 이번 주 감정</h2>
+                    <div class="week-grid" id="weekGrid"></div>
+                    <div id="weekCaptureNote" style="margin-top:10px; font-size:12px; opacity:.7; text-align:right;">
+                    </div>
+                </div>
                 <button class="btn" id="weekSaveBtn" style="width:100%; margin-top:10px;">
                     🖼️ 주간 요약 이미지 저장
                 </button>
@@ -1313,6 +1317,43 @@
             </div>
         </div>
     </div>
+
+    <!-- SEO Footer Section -->
+    <section class="seo-intro" style="margin: 40px 16px 100px; padding-top:20px; border-top:1px dashed var(--stroke);">
+        <div class="intro-card" style="background: rgba(255,255,255,0.85); padding:16px; border-radius:16px;">
+            <h3 style="text-align:center; margin:0 0 12px 0;">📚 마인드 버디 안내</h3>
+
+            <article style="margin-bottom:14px;">
+                <h4 style="margin:0 0 6px 0;">마인드 버디는 어떤 서비스인가요?</h4>
+                <p style="margin:0; line-height:1.7; font-size:0.9rem; color:var(--muted);">
+                    마인드 버디는 감정을 "이름 붙여서" 가볍게 정리하고, 하루를 조금 더 편하게 보내도록 돕는 간단한 웹 도구예요.
+                    감정 선택/메시지/주간 요약은 사용자가 스스로 흐름을 돌아볼 수 있게 설계했어요.
+                </p>
+            </article>
+
+            <article style="margin-bottom:14px;">
+                <h4 style="margin:0 0 6px 0;">기록은 어디에 저장되나요?</h4>
+                <p style="margin:0; line-height:1.7; font-size:0.9rem; color:var(--muted);">
+                    기본적으로 기록은 브라우저의 로컬 저장소(localStorage)에 저장돼요.
+                    같은 기기/브라우저에서는 유지되지만, 브라우저 데이터 삭제/기기 변경 시 사라질 수 있어요.
+                </p>
+            </article>
+
+            <article style="margin-bottom:14px;">
+                <h4 style="margin:0 0 6px 0;">안내 및 유의사항</h4>
+                <p style="margin:0; line-height:1.7; font-size:0.9rem; color:var(--muted);">
+                    이 서비스는 의료/상담/치료 목적이 아니며, 전문적인 도움을 대체하지 않아요.
+                    일상 기능으로 가볍게 활용해 주세요.
+                </p>
+            </article>
+
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
+                <button class="btn" style="min-width:100px;" onclick="openModal('aboutModal')">About</button>
+                <button class="btn" style="min-width:100px;" onclick="openModal('privacyModal')">개인정보</button>
+                <button class="btn" id="contactBtn" style="min-width:100px;">문의하기</button>
+            </div>
+        </div>
+    </section>
 
     <!-- Bottom Navigation -->
     <nav class="tab-nav">
@@ -2744,7 +2785,46 @@
             document.getElementById('grDone').style.display = 'none';
             document.querySelectorAll('.grounding-step').forEach(e => e.classList.remove('done'));
         }
+
+        // Contact Form Link
+        const CONTACT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSerzdfFquM1oQ_Ozcsd0RUdRiH-KjFv7AqCRdyZs7J9-vC-yg/viewform";
+        document.getElementById("contactBtn")?.addEventListener("click", (e) => {
+            e.preventDefault?.();
+            window.open(CONTACT_FORM_URL, "_blank", "noopener,noreferrer");
+        });
     </script>
+
+    <!-- About Modal -->
+    <div class="modal-overlay" id="aboutModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>About</h3>
+                <button class="close-icon" onclick="closeModal('aboutModal')">✕</button>
+            </div>
+            <p style="line-height:1.7; color:var(--ink);">
+                마인드 버디는 감정 선택과 짧은 메시지로 하루의 흐름을 정리하도록 돕는 미니 서비스예요.<br><br>
+                기록은 기본적으로 사용자의 브라우저에 저장돼요.
+            </p>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div class="modal-overlay" id="privacyModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>개인정보 처리방침</h3>
+                <button class="close-icon" onclick="closeModal('privacyModal')">✕</button>
+            </div>
+            <div style="line-height:1.7; color:var(--ink); font-size:0.9rem;">
+                <p><strong>1) 로컬 저장</strong><br>감정 클릭 집계/오늘 메시지/일부 설정은 브라우저 로컬 저장소에 저장될 수 있어요.</p>
+                <p><strong>2) 외부 전송</strong><br>기본 기능은 서버 전송 없이 동작하도록 설계돼요.</p>
+                <p><strong>3) 광고</strong><br>광고가 표시될 경우, 제3자 제공자가 쿠키/기기 식별자 등을 사용할 수 있어요.</p>
+                <p><strong>4) 문의</strong><br>아래 "문의하기" 버튼을 통해 요청할 수 있어요.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </body>
 
 </html>
