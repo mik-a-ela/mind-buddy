@@ -1277,7 +1277,6 @@
                 <h2 class="card-title">📝 최근 기록</h2>
                 <ul class="history-list" id="historyList"></ul>
                 <div style="text-align:right; margin-top:15px;">
-                    <button class="btn" onclick="exportData()">내보내기</button>
                     <button class="btn btn-danger" onclick="clearData()">기록 삭제</button>
                 </div>
             </div>
@@ -1304,6 +1303,10 @@
             <div class="card" style="background:rgba(255,255,255,0.4);">
                 <p style="font-size:0.85rem; color:var(--muted); line-height:1.6;">
                     데이터는 서버에 저장되지 않고,<br>오직 이 기기에만 저장됩니다.
+                </p>
+                <button class="btn" style="width:100%; margin-top:10px;" onclick="exportData()">📤 데이터 내보내기</button>
+                <p style="font-size:0.75rem; color:var(--muted); margin-top:6px; text-align:center;">
+                    JSON 파일로 저장됩니다.
                 </p>
                 <button class="notice-btn" style="margin-top:10px; width:100%" onclick="openModal('noticeModal')">⚠️
                     주의사항 및 도움처</button>
@@ -2058,11 +2061,12 @@
                 const dayData = all[iso];
                 const has = dayData && dayData.total > 0;
                 const dot = has ? '<div style="width:6px; height:6px; background:var(--primary); border-radius:50%;"></div>' : '';
+                const dateLabel = `${d.getMonth() + 1}/${d.getDate()}`;
                 grid.innerHTML += `
                     <div class="day-cell ${iso === todayISO ? 'today' : ''}"
                          style="cursor:pointer;"
                          onclick="openDaySummary('${iso}')">
-                        <span>${d.getDate()}</span>
+                        <span>${dateLabel}</span>
                         ${dot}
                     </div>
                 `;
