@@ -43,6 +43,21 @@
             --radius-sm: 16px;
         }
 
+        /* Flash animation for scroll highlight */
+        .flash {
+            animation: flash 0.9s ease-out;
+        }
+
+        @keyframes flash {
+            from {
+                box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.12);
+            }
+
+            to {
+                box-shadow: 0 0 0 14px rgba(0, 0, 0, 0);
+            }
+        }
+
         /* --- Global Reset & Body --- */
         * {
             box-sizing: border-box;
@@ -1320,7 +1335,8 @@
 
     <!-- SEO Footer Section -->
     <section class="seo-intro" style="margin: 40px 16px 100px; padding-top:20px; border-top:1px dashed var(--stroke);">
-        <div class="intro-card" style="background: rgba(255,255,255,0.85); padding:16px; border-radius:16px;">
+        <div class="intro-card" id="guideSection"
+            style="background: rgba(255,255,255,0.85); padding:16px; border-radius:16px;">
             <h3 style="text-align:center; margin:0 0 12px 0;">📚 마인드 버디 안내</h3>
 
             <article style="margin-bottom:14px;">
@@ -1348,7 +1364,7 @@
             </article>
 
             <div style="display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
-                <button class="btn" style="min-width:100px;" onclick="openModal('aboutModal')">About</button>
+                <button class="btn" type="button" style="min-width:100px;" onclick="scrollToGuide()">About</button>
                 <button class="btn" style="min-width:100px;" onclick="openModal('privacyModal')">개인정보</button>
                 <button class="btn" id="contactBtn" style="min-width:100px;">문의하기</button>
             </div>
@@ -2792,6 +2808,15 @@
             e.preventDefault?.();
             window.open(CONTACT_FORM_URL, "_blank", "noopener,noreferrer");
         });
+
+        // Scroll to Guide Section
+        function scrollToGuide() {
+            const el = document.getElementById('guideSection');
+            if (!el) return;
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            el.classList.add('flash');
+            setTimeout(() => el.classList.remove('flash'), 900);
+        }
     </script>
 
     <!-- About Modal -->
