@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mind-buddy.pages.dev/sitemap.xml
