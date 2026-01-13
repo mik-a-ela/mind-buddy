@@ -1188,56 +1188,6 @@
                         듣기</button>
                 </div>
             </div>
-
-            <!-- [교체 추천] 웰컴 메시지 & 사이트 소개 (버튼 없이 바로 노출) -->
-            <section id="welcomeArea" class="seo-intro" aria-label="마인드 버디 서비스 소개">
-                <div class="intro-card">
-                    <h2 class="intro-title">🌱 마인드 버디는 어떤 곳인가요?</h2>
-
-                    <!-- 첫 화면에 보일 “짧은 소개” -->
-                    <p class="intro-hero">
-                        이모지로 기분을 고르면, 동물 친구가 말풍선으로 다정한 한마디를 건네요.<br>
-                        숨 고르기·그라운딩·미니 게임으로 잠깐 쉬어가요.
-                    </p>
-
-                    <!-- 길게 느껴지지 않게 “블록 분산” -->
-                    <div class="intro-grid">
-                        <div class="intro-box">
-                            <div class="intro-box-title">✨ 이렇게 사용해요</div>
-                            <ul class="intro-list">
-                                <li>기분 이모지 선택</li>
-                                <li>동물 친구의 한마디 받기</li>
-                                <li>루틴/게임으로 긴장 풀기</li>
-                            </ul>
-                        </div>
-
-                        <div class="intro-box">
-                            <div class="intro-box-title">🧸 들어있는 것들</div>
-                            <ul class="intro-list">
-                                <li>4-7-8 호흡, 30초 그라운딩</li>
-                                <li>버블랩 · 쓰담쓰담 · 얼음깨기</li>
-                                <li>도감/기록(이 기기에만 저장)</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <p class="intro-note">
-                        마인드 버디는 전문 심리상담이나 치료를 대신하지 않아요. 위급한 상황이라면 도움처 안내를 확인해 주세요.
-                    </p>
-
-                    <!-- 콘텐츠 분량 보강용: “짧은 FAQ” (버튼 없이 그대로 노출) -->
-                    <div class="intro-faq">
-                        <div class="faq-q">Q. 내 기록은 어디에 저장되나요?</div>
-                        <div class="faq-a">A. 서버가 아니라 이 기기(LocalStorage)에만 저장돼요.</div>
-
-                        <div class="faq-q">Q. 오늘의 쪽지는 하루에 한 번만인가요?</div>
-                        <div class="faq-a">A. 하루에 하나가 정해지고, 그날은 다시 열어볼 수 있어요.</div>
-
-                        <div class="faq-q">Q. 너무 힘들 때는요?</div>
-                        <div class="faq-a">A. 설정 탭의 도움처 안내를 먼저 확인해 주세요.</div>
-                    </div>
-                </div>
-            </section>
         </div>
 
         <!-- Tab 2: Games -->
@@ -1334,39 +1284,25 @@
     </div>
 
     <!-- SEO Footer Section -->
-    <section class="seo-intro" style="margin: 40px 16px 100px; padding-top:20px; border-top:1px dashed var(--stroke);">
-        <div class="intro-card" id="guideSection"
-            style="background: rgba(255,255,255,0.85); padding:16px; border-radius:16px;">
-            <h3 style="text-align:center; margin:0 0 12px 0;">📚 마인드 버디 안내</h3>
+    <section class="seo-intro" style="margin: 20px 16px 100px;">
+        <div class="card" id="guideSection">
+            <h2 class="card-title">📚 마인드 버디 안내</h2>
 
-            <article style="margin-bottom:14px;">
-                <h4 style="margin:0 0 6px 0;">마인드 버디는 어떤 서비스인가요?</h4>
-                <p style="margin:0; line-height:1.7; font-size:0.9rem; color:var(--muted);">
-                    마인드 버디는 감정을 "이름 붙여서" 가볍게 정리하고, 하루를 조금 더 편하게 보내도록 돕는 간단한 웹 도구예요.
-                    감정 선택/메시지/주간 요약은 사용자가 스스로 흐름을 돌아볼 수 있게 설계했어요.
-                </p>
-            </article>
+            <div class="intro-faq">
+                <div class="faq-q">마인드 버디는 어떤 서비스인가요?</div>
+                <div class="faq-a">감정을 "이름 붙여서" 가볍게 정리하고, 하루를 조금 더 편하게 보내도록 돕는 간단한 웹 도구예요.</div>
 
-            <article style="margin-bottom:14px;">
-                <h4 style="margin:0 0 6px 0;">기록은 어디에 저장되나요?</h4>
-                <p style="margin:0; line-height:1.7; font-size:0.9rem; color:var(--muted);">
-                    기본적으로 기록은 브라우저의 로컬 저장소(localStorage)에 저장돼요.
-                    같은 기기/브라우저에서는 유지되지만, 브라우저 데이터 삭제/기기 변경 시 사라질 수 있어요.
-                </p>
-            </article>
+                <div class="faq-q">기록은 어디에 저장되나요?</div>
+                <div class="faq-a">브라우저의 로컬 저장소(localStorage)에 저장돼요. 같은 기기/브라우저에서는 유지되지만, 데이터 삭제/기기 변경 시 사라질 수 있어요.
+                </div>
 
-            <article style="margin-bottom:14px;">
-                <h4 style="margin:0 0 6px 0;">안내 및 유의사항</h4>
-                <p style="margin:0; line-height:1.7; font-size:0.9rem; color:var(--muted);">
-                    이 서비스는 의료/상담/치료 목적이 아니며, 전문적인 도움을 대체하지 않아요.
-                    일상 기능으로 가볍게 활용해 주세요.
-                </p>
-            </article>
+                <div class="faq-q">안내 및 유의사항</div>
+                <div class="faq-a">이 서비스는 의료/상담/치료 목적이 아니며, 전문적인 도움을 대체하지 않아요. 일상 기능으로 가볍게 활용해 주세요.</div>
+            </div>
 
-            <div style="display:flex; gap:10px; justify-content:center; margin-top:14px; flex-wrap:wrap;">
-                <button class="btn" type="button" style="min-width:100px;" onclick="scrollToGuide()">About</button>
-                <button class="btn" style="min-width:100px;" onclick="openModal('privacyModal')">개인정보</button>
-                <button class="btn" id="contactBtn" style="min-width:100px;">문의하기</button>
+            <div style="display:flex; gap:10px; justify-content:center; margin-top:14px;">
+                <button class="btn" onclick="openModal('privacyModal')">개인정보</button>
+                <button class="btn" id="contactBtn">문의하기</button>
             </div>
         </div>
     </section>
