@@ -2300,11 +2300,6 @@
             ctx.font = 'bold 52px Gowun Dodum, sans-serif';
             ctx.fillText(`${totalWeek}회`, 820, 1120);
 
-            ctx.fillStyle = '#8c837d';
-            ctx.font = '30px Gowun Dodum, sans-serif';
-            ctx.fillText('메시지 기록은 오늘 것만 최대 100개 저장돼요. (요약 카운트는 날짜별로 누적)', 80, H - 150);
-            ctx.fillText('데이터는 서버가 아니라 이 기기(LocalStorage)에만 저장돼요.', 80, H - 110);
-
             const a = document.createElement('a');
             const todayISO = toISODateLocal(new Date());
             a.download = `mind-buddy-week-${todayISO}.png`;
